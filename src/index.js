@@ -13,7 +13,7 @@ const localHostSSL = {
 };
 const routes = new Routes();
 
-const server = https.createServer(localHostSSL, routes.handler.bind());
+const server = https.createServer(localHostSSL, routes.handler.bind(routes));
 
 const io = new Server(server, {
   cors: {
@@ -21,7 +21,9 @@ const io = new Server(server, {
     Credentials: false,
   },
 });
+
 routes.setSocketInstance(io);
+
 io.on('connection', (socket) => logger.info(`someone connected:${socket.id}`));
 
 const startServer = () => {
